@@ -24,7 +24,7 @@ public class ClusterLoadGenerator extends AbstractLoadGenerator {
 
         //Deadline will be propotional to the load reasonablly,
         if(!reasonableDeadline) {
-            this.deadlineND = new NormalDistribution(averageSize,variance);
+            this.deadlineND = new NormalDistribution(averageSize/10,variance/10);
         }
         //write out the workload into a file
         try (FileWriter fws = new FileWriter(

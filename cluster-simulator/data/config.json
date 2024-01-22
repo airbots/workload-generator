@@ -1,6 +1,8 @@
 {
-    "Target_Accptance_Rate": 0.9,
-    "Max_CPU_Utilization": 0.9,
-    "Max_Memory_Utilization": 0.9,
-    "Max_Network_Utilization": 0.9
+    "Target_Accptance_Rate": 90,
+    "Max_CPU_Utilization": 90,
+    "Max_Memory_Utilization": 90,
+    "Max_Network_Utilization": 90,
+    "Time_To_Complete_Task": 2,
+    "Initial_Node_Count": 2
 }

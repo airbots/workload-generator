@@ -1,7 +1,7 @@
 import logging
 
 class Cluster:
-    def __init__(self, node_count=10):
+    def __init__(self, node_count):
         self.nodes = [Node(0, 0, 0) for _ in range(node_count)]
 
     def scale(self, node_count):
@@ -50,7 +50,6 @@ class Cluster:
             node.memory = total_memory / node_count
             node.network = total_network / node_count
 
-
     def get_total_utilization(self):
         cpu = sum([node.cpu for node in self.nodes])
         memory = sum([node.memory for node in self.nodes])
@@ -60,6 +59,8 @@ class Cluster:
     def get_avg_cluster_utilization(self):
         cpu, memory, network = self.get_total_utilization()
         return round(cpu/len(self.nodes)), round(memory/len(self.nodes)), round(network/len(self.nodes))
+    
+        
     
 class Node:
     def __init__(self, cpu, memory, network):

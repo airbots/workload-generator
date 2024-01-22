@@ -11,22 +11,22 @@ class Task:
     - deadline (int): The deadline of the task
     """
 
-    def __init__(self, load, cpu, memory, network, arrival_time, deadline):
-        if cpu < 0 or memory < 0 or network < 0 or arrival_time < 0:
+    def __init__(self, arr_tme, task_num, cpu, mem, network, ddl):
+        if cpu < 0 or mem < 0 or network < 0 or arr_tme < 0:
             raise Exception("Invalid parameters")
         
-        self.load = load
+        self.arrival_time = arr_tme
+        self.num_tasks = task_num
         self.cpu = cpu
-        self.memory = memory
+        self.memory = mem
         self.network = network
-        self.arrival_time = arrival_time
-        self.deadline = deadline
+        self.deadline = ddl
 
     def __lt__(self, other):
         return self.arrival_time < other.arrival_time
 
     def __str__(self):
-        return f"Task({self.load}, {self.cpu}, {self.memory}, {self.network}, {self.arrival_time}, {self.deadline})"
+        return f"arrival_time: {self.arrival_time}, num_tasks: {self.num_tasks}, cpu: {self.cpu}, memory: {self.memory}, network: {self.network}, deadline: {self.deadline}"
     
     def get_avg_metrics(self, node_count):
         return self.cpu/node_count, self.memory/node_count, self.network/node_count

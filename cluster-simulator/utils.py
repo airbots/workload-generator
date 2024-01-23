@@ -8,8 +8,8 @@ def print_utilization(time, cpu_percent, mem_percent, net_percent, node_count, s
 
     print(f"{time} | CPU: {cpu_string} {cpu_percent}% | Memory: {mem_string} {mem_percent}% | Network: {net_string} {net_percent}% | Nodes: {node_count}")
 
-def load_workload():
-    with open('data/workload.txt', 'r') as f:
+def load_workload(fname):
+    with open(f'data/{fname}.txt', 'r') as f:
         line = [line.strip() for line in f.readlines()]
         # remove first line because it is the header
         line.pop(0)

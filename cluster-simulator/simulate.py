@@ -1,16 +1,10 @@
 # %%
 from utils import load_workload, load_config
-from cluster import Cluster
 import math
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.model_selection import GridSearchCV
 
 data = load_workload('workload3')
 config = load_config()
 
-cluster = Cluster(config['Initial_Node_Count'])
 
 def scale_workload(data, config):
     # This function is still work in progress
@@ -51,38 +45,3 @@ def get_num_task_per_node(task, config):
     mem_cap = config['Max_Memory_Utilization']/task.memory
     net_cap = config['Max_Network_Utilization']/task.network
     return math.ceil(min(cpu_cap, mem_cap, net_cap))
-
-print(get_min_nodes_lst(data, config))
-# %%
-X = [[task.arrival_time, task.num_tasks, task.cpu, task.memory, task.network, task.deadline] for task in data]
-Y = get_min_nodes_lst(data, config)
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-
-# %%
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-
-# Train the model
-model.fit(X_train, Y_train)
-
-param_grid = {
-    'n_estimators': [25, 50, 100, 200, 300, 400, 500],
-    'max_depth': [None, 1, 2, 3, 6, 10, 20, 30]
-}
-
-grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5)
-grid_search.fit(X_train, Y_train)
-
-best_model = grid_search.best_estimator_
-
-# Make predictions
-Y_pred = best_model.predict(X_test)
-
-# Evaluate the best model
-mse = mean_squared_error(Y_test, Y_pred)
-r2 = r2_score(Y_test, Y_pred)
-
-print(f"Best parameters: {grid_search.best_params_}")
-print(f"Mean Squared Error (MSE): {mse}")
-print(f"R^2 Score: {r2}")
-
-# %%

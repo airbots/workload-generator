@@ -1,5 +1,5 @@
 ArrivalTime, No. of Tasks in job, CPU utilization for each task, Memory Utilization for each task, Network Utilization for each task, Deadline for the job
-0,62,20,40,20,93
+0,62,20,40,20,93 
 12,3,20,40,20,98
 18,30,20,40,20,90 
 21,15,20,40,20,94
@@ -19,3 +19,5 @@ ArrivalTime, No. of Tasks in job, CPU utilization for each task, Memory Utilizat
 438,119,20,40,20,134
 440,3,20,40,20,83 
 492,12,20,40,20,91
+
+2, 1, 1, 1, 3, 6, 1, 3, 1, 1, 9, 1, 2, 2, 5, 2, 5, 2, 1, 1

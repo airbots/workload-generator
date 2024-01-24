@@ -221,6 +221,11 @@ def calc_min_nodes(task, cluster_state, execution_time, parallelization):
     Returns:
     - The minimum number of nodes required to process the task.
     """
+
+    if len(cluster_state) == 1:
+        logging.info(f'No scaling is needed')
+        return len(cluster_state)
+    
     # Calculate the total number of tasks
     total_tasks = task.num_tasks * execution_time / parallelization
     logging.info(f'The total number of tasks is: {total_tasks}')
@@ -250,3 +255,15 @@ def calc_min_nodes(task, cluster_state, execution_time, parallelization):
     else:
         logging.info(f'Scaling down is needed')
         return len(cluster_state) + math.floor(resource / diff)
+
+# %%
+from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
+
+data = load_workload('workload1')
+config = load_config()
+
+print(get_min_nodes_lst(data, config))
+# %%
+print(3/34)
+# %%
+print((27/4)*4)

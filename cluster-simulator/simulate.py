@@ -205,4 +205,48 @@ cluster_state = process_task(data[0], cluster_state, 1, 2)
 
 logging.info(f'The cluster state is: {cluster_state}')
 # %%
+import math
+import logging
 
+def calc_min_nodes(task, cluster_state, execution_time, parallelization):
+    """
+    Calculates the minimum number of nodes required to process a task.
+
+    Parameters:
+    - task: The task to be processed.
+    - cluster_state: The current state of the cluster nodes.
+    - execution_time: The time required to execute the task.
+    - parallelization: The degree of parallelization for the task execution.
+
+    Returns:
+    - The minimum number of nodes required to process the task.
+    """
+    # Calculate the total number of tasks
+    total_tasks = task.num_tasks * execution_time / parallelization
+    logging.info(f'The total number of tasks is: {total_tasks}')
+
+    # Calculate the available space in the cluster nodes
+    available_space = sum([node[task.arrival_time:task.arrival_time+task.deadline].count(0) 
+                           for node in cluster_state])
+
+    # Calculate the difference between the total number of tasks and the available space
+    diff = total_tasks - available_space
+
+    # Resource provided by one node
+    resource = task.deadline
+
+    # Calculate the node needed or can be removed
+    count = (diff / resource)
+
+    # no scaling is needed
+    if count == 0:
+        logging.info(f'No scaling is needed')
+        return len(cluster_state)
+    # scaling up is needed
+    elif count > 0:
+        logging.info(f'Scaling up is needed')
+        return len(cluster_state) + math.ceil(count)
+    # scaling down is needed
+    else:
+        logging.info(f'Scaling down is needed')
+        return len(cluster_state) + math.floor(resource / diff)

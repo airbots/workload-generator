@@ -34,7 +34,7 @@ def scale_workload(data, config):
         if len(data) == 0:
             break
         if i == data[0].arrival_time:
-            logging.info(f'Processing task: {data[0]} at time {i}')
+            logging.info(f'----- Processing task: {data[0]} at time {i} -----')
             task_queue.append(data.pop(0))
             parallization = get_num_task_per_node(task_queue[0], config)
             if task_can_be_processed(task_queue[0], cluster_state, parallization, execution_time):
@@ -83,8 +83,9 @@ def task_can_be_processed(task, cluster_state, parallelization, execution_time):
     - A boolean value indicating whether the task can be processed. Returns True if there is enough space to process the task, and False otherwise.
     """
     # check if there is enough nodes to process the task
-    available_space = sum([node[task.arrival_time:task.deadline].count(0) for node in cluster_state])
+    available_space = sum([node[task.arrival_time:(task.arrival_time + task.deadline)].count(0) for node in cluster_state])
     required_space = math.ceil(task.num_tasks/parallelization) * execution_time
+    logging.info(f'The available space is: {available_space} slots, the required space is: {required_space} slots')
     return available_space >= required_space
 
 
@@ -104,9 +105,6 @@ def process_task(task, cluster_state, parallelization, execution_time):
 
     num_nodes = len(cluster_state)
     required_space = math.ceil((task.num_tasks/parallelization) * execution_time)
-    upper_bound = math.ceil(required_space/num_nodes) + task.arrival_time
-
-    logging.debug(f'The upper bound is: {upper_bound}')
     logging.info(f'The required space is: {required_space} slots')
 
     # Use round robin to schedule the task
@@ -115,6 +113,9 @@ def process_task(task, cluster_state, parallelization, execution_time):
     while required_space > 0:
         logging.debug(f'Processing node {current_node_idx}, the current node state is: {cluster_state[current_node_idx]}')
         node = cluster_state[current_node_idx].copy()
+        first_nonzero_index_after_timestamp = node[task.arrival_time:].index(0) + task.arrival_time
+        upper_bound = math.ceil(required_space/num_nodes) + first_nonzero_index_after_timestamp
+        logging.debug(f'The upper bound is: {upper_bound}')
         for i in range(task.arrival_time, upper_bound):
             if node[i] == 0:
                 node[i] = 1

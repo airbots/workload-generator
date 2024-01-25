@@ -99,4 +99,3 @@ ArrivalTime, No. of Tasks in job, CPU utilization for each task, Memory Utilizat
 1816,50,51,44,50,100
 1819,16,82,15,12,32
 1844,125,1,55,61,250
-

@@ -3,7 +3,7 @@ from utils import load_workload, load_config, get_num_task_per_node
 import math
 import logging
 
-data = load_workload('workload2')
+data = load_workload('workload3')
 config = load_config()
 
 logging.getLogger().setLevel(logging.INFO)
@@ -119,6 +119,8 @@ def process_task(task, cluster_state, parallelization, execution_time):
             logging.error(f"No available slots in node {current_node_idx} after timestamp {task.arrival_time}")
             break
         upper_bound = math.ceil(required_space/num_nodes) + first_nonzero_index_after_timestamp
+        if upper_bound > len(node): 
+            upper_bound = len(node)
         logging.debug(f'The upper bound is: {upper_bound}')
         for i in range(task.arrival_time, upper_bound):
             if node[i] == 0:

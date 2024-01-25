@@ -7,7 +7,8 @@ data = load_workload('workload')
 config = load_config()
 
 logging.getLogger().setLevel(logging.INFO)
-# %%
+
+
 # This function is used to simulate the cluster scaling process
 def scale_workload(data, config):
     result = {}
@@ -255,21 +256,11 @@ def calc_min_nodes(task, cluster_state, execution_time, parallelization):
         logging.info(f'Scaling down is needed')
         return len(cluster_state) + math.floor(resource / diff)
     
-# %%
+
 '''
 
 This section is for testing
 
 '''
-
-from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
-import math
-import logging
-
-data = load_workload('workload')
-config = load_config()
-
-logging.getLogger().setLevel(logging.INFO)
-
-print(scale_workload(data, config))
-# %%
+if __name__ == "__main__":
+    print(scale_workload(data, config))

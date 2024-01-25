@@ -1,5 +1,5 @@
+# %%
 import csv,time
-
 print("*********************   Start  ************************")
 print("****************   Cluster Simulator  *******************")
 
@@ -43,7 +43,7 @@ dict_rows={'ArrivalTime':'',
 #run submitted job (mark the rectengles of node resources);
 #call ML algorithm to get how many nodes needed;
 def get_nodes_count():
-    num_of_max_nodes=9 #to do using ML algo
+    num_of_max_nodes=2 #to do using ML algo
     return num_of_max_nodes
 
 #check status from output file
@@ -70,8 +70,10 @@ def c_smul(ArrivalTime, Num_Task, Max_CPU_Utilization, Memory_Utilization, Netwo
 
     return mtrx_emit
 
+# %%
+import csv,time
 def read_workload_data():
-    workload_file="/Users/singhra/Documents/Work/sf_git_repository/workload_1.txt"
+    workload_file="data/workload.txt"
     with open(workload_file,'r') as file:
         #csv_reader=csv.reader(file)
         csv_reader=csv.DictReader(file)
@@ -108,3 +110,5 @@ read_workload_data()
 
 #print(c_smul(ArrivalTime,Num_Task, Max_CPU_Utilization, Memory_Utilization, Network_Utilization, job_deadline))
 
+
+# %%

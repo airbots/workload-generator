@@ -11,12 +11,12 @@ class Task:
     - deadline (int): The deadline of the task
     """
 
-    def __init__(self, arr_tme, task_num, cpu, mem, network, ddl):
-        if cpu < 0 or mem < 0 or network < 0 or arr_tme < 0:
+    def __init__(self, arrival_time, num_tasks, cpu, mem, network, ddl):
+        if cpu < 0 or mem < 0 or network < 0 or num_tasks < 0:
             raise Exception("Invalid parameters")
         
-        self.arrival_time = arr_tme
-        self.num_tasks = task_num
+        self.arrival_time = arrival_time
+        self.num_tasks = num_tasks
         self.cpu = cpu
         self.memory = mem
         self.network = network

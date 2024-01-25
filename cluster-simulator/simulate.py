@@ -1,19 +1,20 @@
 # %%
-from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
+from utils import load_workload, load_config, get_num_task_per_node
 import math
 import logging
 
-data = load_workload('workload3')
+data = load_workload('workload')
 config = load_config()
 
 logging.getLogger().setLevel(logging.INFO)
 # %%
 # This function is used to simulate the cluster scaling process
 def scale_workload(data, config):
-    result = []
+    result = {}
 
     # get the maximum time needed to complete the entire workload
-    max_time = [task.arrival_time + task.deadline for task in data]
+    max_time = max([task.arrival_time + task.deadline for task in data])
+    logging.info(f'The maximum time needed to complete the entire workload is: {max_time}')
     
     processed_task = 0
     rejected_task = 0
@@ -27,19 +28,42 @@ def scale_workload(data, config):
 
     # Start the simulation, where each iteration represents one second
     for i in range(max_time):
-        # Calculate the acceptance rate
-        if processed_task + rejected_task == 0:
-            acceptace_rate = 0
-        else:
-            acceptace_rate = int((processed_task / processed_task + rejected_task) * 100)
-        
         task_queue = []
         # check if it is time to bring in new task
+        if len(data) == 0:
+            break
         if i == data[0].arrival_time:
-            print(f'Processing task: {data[0]} at time {i}')
+            logging.info(f'Processing task: {data[0]} at time {i}')
             task_queue.append(data.pop(0))
-            parallization = get_num_task_per_node(task_queue, config)
-    pass
+            parallization = get_num_task_per_node(task_queue[0], config)
+            if task_can_be_processed(task_queue[0], cluster_state, parallization, execution_time):
+                current_task = task_queue.pop(0)
+                temp_cluster_state = process_task(current_task, cluster_state, parallization, execution_time)
+                processed_task += 1
+                cluster_state = temp_cluster_state
+                logging.info(f'The task {current_task} is processed, the cluster state after processing the task is: {[node.count(1) for node in cluster_state]}')
+                logging.info(f'The cluster state after processing the task is: {[node.count(1) for node in cluster_state]}')
+            else:
+                logging.info(f'The task cannot be processed, rejecting the task')
+                rejected_task += 1
+        else:
+            logging.info(f'No task is coming in at time {i}')
+    
+    # Calculate the acceptance rate
+    if processed_task + rejected_task == 0:
+        acceptace_rate = 0
+    else:
+        acceptace_rate = int((processed_task / (processed_task + rejected_task)) * 100)
+
+    completion_time = max(i for sublist in cluster_state for i, x in enumerate(sublist) if x == 1)
+    utilization = int(sum([node.count(1) for node in cluster_state]) / (len(cluster_state) * completion_time)*100)
+
+    result['Acceptance_Rate'] = acceptace_rate
+    result['Overall_Utilization'] = utilization
+    result['Task_Completion_Time'] = completion_time
+    result['No_of_Completed Tasks'] = processed_task
+        
+    return result
 
 
 def task_can_be_processed(task, cluster_state, parallelization, execution_time):
@@ -59,6 +83,7 @@ def task_can_be_processed(task, cluster_state, parallelization, execution_time):
     available_space = sum([node[task.arrival_time:task.deadline].count(0) for node in cluster_state])
     required_space = math.ceil(task.num_tasks/parallelization) * execution_time
     return available_space >= required_space
+
 
 def process_task(task, cluster_state, parallelization, execution_time):
     """
@@ -99,6 +124,7 @@ def process_task(task, cluster_state, parallelization, execution_time):
  
     logging.info(f'The cluster task count after assignment is: {[node.count(1) for node in cluster_state]}')
     return cluster_state
+
 
 def scale_down(cluster_state, target_node_count, timestamp):
     """
@@ -181,33 +207,6 @@ def reassign_task(cluster_state, total_tasks_to_assign, timestamp):
     return updated_cluster_state
 
 
-# %%
-'''
-
-This section is for testing
-
-'''
-
-from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
-import math
-import logging
-
-data = load_workload('workload3')
-config = load_config()
-
-logging.getLogger().setLevel(logging.INFO)
-
-max_time = 30
-
-default_cluster = [0] * max_time
-cluster_state = [default_cluster for _ in range(5)]
-cluster_state = process_task(data[0], cluster_state, 1, 2)
-
-logging.info(f'The cluster state is: {cluster_state}')
-# %%
-import math
-import logging
-
 def calc_min_nodes(task, cluster_state, execution_time, parallelization):
     """
     Calculates the minimum number of nodes required to process a task.
@@ -255,15 +254,22 @@ def calc_min_nodes(task, cluster_state, execution_time, parallelization):
     else:
         logging.info(f'Scaling down is needed')
         return len(cluster_state) + math.floor(resource / diff)
-
+    
 # %%
-from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
+'''
 
-data = load_workload('workload1')
+This section is for testing
+
+'''
+
+from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
+import math
+import logging
+
+data = load_workload('workload')
 config = load_config()
 
-print(get_min_nodes_lst(data, config))
+logging.getLogger().setLevel(logging.INFO)
+
+print(scale_workload(data, config))
 # %%
-print(3/34)
-# %%
-print((27/4)*4)

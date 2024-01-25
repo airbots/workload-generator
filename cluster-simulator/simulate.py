@@ -63,6 +63,8 @@ def scale_workload(data, config):
     result['Overall_Utilization'] = utilization
     result['Task_Completion_Time'] = completion_time
     result['No_of_Completed Tasks'] = processed_task
+    result['No_of_Rejected_Tasks'] = rejected_task
+    result['Node_Count'] = len(cluster_state)
         
     return result
 
@@ -264,3 +266,5 @@ This section is for testing
 '''
 if __name__ == "__main__":
     print(scale_workload(data, config))
+
+# %%

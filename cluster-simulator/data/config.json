@@ -3,6 +3,6 @@
     "Max_CPU_Utilization": 90,
     "Max_Memory_Utilization": 90,
     "Max_Network_Utilization": 90,
-    "Time_To_Complete_Task": 2,
+    "Time_To_Complete_Task": 5,
     "Initial_Node_Count": 1
 }

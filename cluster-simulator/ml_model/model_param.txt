@@ -1,3 +1,5 @@
 INFO:root:Best parameters: {'max_depth': None, 'n_estimators': 500}
 INFO:root:Mean Squared Error (MSE): 1.4042091428571428
 INFO:root:R^2 Score: 0.9282770173731758
+
+INFO:root:Accuracy: 0.23809523809523808

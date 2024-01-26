@@ -362,8 +362,10 @@ This section is for testing
 min_lst = [1, 1, 1, 1, 1]
 node_lst = [5, 3, 3, 5, 3]
 max_lst = [9, 9, 9, 9, 9]
+second_algo_lst = [1, 1, 9, 1, 1]
 
 if __name__ == "__main__":
-    print(scale_workload_dynamic(data, config, max_lst))
+    print(scale_workload_dynamic(data, config, second_algo_lst))
+
 
 # %%

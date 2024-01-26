@@ -1,0 +1,10 @@
+{'Acceptance_Rate': 20, 'Overall_Utilization': 100, 'Task_Completion_Time': 24, 'No_of_Completed_Tasks': 1, 'No_of_Rejected_Tasks': 4, 'Node_Count': 1, 'Total_Num_Tasks': 74}
+{'Acceptance_Rate': 40, 'Overall_Utilization': 75, 'Task_Completion_Time': 46, 'No_of_Completed_Jobs': 2, 'No_of_Rejected_Jobs': 3, 'Node_Count': 2, 'Total_Num_Tasks': 74}
+{'Acceptance_Rate': 80, 'Overall_Utilization': 62, 'Task_Completion_Time': 30, 'No_of_Completed_Jobs': 4, 'No_of_Rejected_Jobs': 1, 'Node_Count': 4, 'Total_Num_Tasks': 74}
+
+Compare:
+1. with 1 node
+2. with 9 node
+3. with dynamic nodes
+
+Fully utilize

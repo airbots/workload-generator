@@ -3,7 +3,7 @@ from utils import load_workload, load_config, get_num_task_per_node
 import math
 import logging
 
-data = load_workload('workload')
+data = load_workload('workload1')
 config = load_config()
 
 logging.getLogger().setLevel(logging.INFO)
@@ -63,8 +63,8 @@ def scale_workload(data, config):
     result['Acceptance_Rate'] = acceptace_rate
     result['Overall_Utilization'] = utilization
     result['Task_Completion_Time'] = completion_time
-    result['No_of_Completed_Tasks'] = processed_task
-    result['No_of_Rejected_Tasks'] = rejected_task
+    result['No_of_Completed_Jobs'] = processed_task
+    result['No_of_Rejected_Jobs'] = rejected_task
     result['Node_Count'] = len(cluster_state)
     result['Total_Num_Tasks'] = sum([task.num_tasks for task in data_copy])
         

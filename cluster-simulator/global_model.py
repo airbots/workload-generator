@@ -43,8 +43,30 @@ for i in range(1,workload_count):
         result = scale_workload(data, config)
         df = pd.concat([df, pd.DataFrame([result])], ignore_index=True)
 
-df.to_csv('data/model_output.csv', index=False)
+df.to_csv('ml_model/model_output.csv', index=False)
 # %%
-df
+# Model Training
+import pandas as pd
+from utils import random_forest
+import logging
+import joblib
 
+df = pd.read_csv('data/model_output.csv')
 # %%
+Y = df['Node_Count']
+X = df.drop(['Node_Count', 'No_of_Completed_Tasks', 'No_of_Rejected_Tasks'], axis=1)
+
+X_lst = X.values.tolist()
+Y_lst = Y.values.tolist()
+
+logging.info(f"Lenght of X: {len(X_lst)}")
+logging.info(f"Lenght of Y: {len(Y_lst)}")
+
+model = random_forest(X_lst, Y_lst)
+# %%
+# Save Model
+joblib.dump(model, 'random_forest_model.joblib')
+
+# Load
+# loaded_model = joblib.load('random_forest_model.joblib')
+

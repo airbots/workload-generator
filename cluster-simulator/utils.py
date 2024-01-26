@@ -63,12 +63,12 @@ def load_config():
     Returns:
     - A dictionary containing the configuration settings. The keys are the setting names and the values are the setting values.
     """
-    with open('data/config.json', 'r') as f:
+    with open('config.json', 'r') as f:
         config = json.load(f)
     return config
 
 
-def random_forest(data, node_lst):
+def random_forest(X, Y):
     """
     This function trains a RandomForestRegressor model using the given data and node list. 
     It also performs grid search to find the best hyperparameters for the model.
@@ -81,8 +81,6 @@ def random_forest(data, node_lst):
     - The best RandomForestRegressor model trained with the optimal hyperparameters found during grid search.
     """
 
-    X = [[task.arrival_time, task.num_tasks, task.cpu, task.memory, task.network, task.deadline] for task in data]
-    Y = node_lst
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
     model = RandomForestRegressor(n_estimators=100, random_state=42)

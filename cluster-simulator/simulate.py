@@ -63,7 +63,7 @@ def scale_workload(data, config):
     result['Acceptance_Rate'] = acceptace_rate
     result['Overall_Utilization'] = utilization
     result['Task_Completion_Time'] = completion_time
-    result['No_of_Completed Tasks'] = processed_task
+    result['No_of_Completed_Tasks'] = processed_task
     result['No_of_Rejected_Tasks'] = rejected_task
     result['Node_Count'] = len(cluster_state)
     result['Total_Num_Tasks'] = sum([task.num_tasks for task in data_copy])

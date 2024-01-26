@@ -3,8 +3,6 @@
 {'Acceptance_Rate': 80, 'Overall_Utilization': 62, 'Task_Completion_Time': 30, 'No_of_Completed_Jobs': 4, 'No_of_Rejected_Jobs': 1, 'Node_Count': 4, 'Total_Num_Tasks': 74}
 
 Compare:
-1. with 1 node
-2. with 9 node
-3. with dynamic nodes
-
-Fully utilize
+1. with 1 node: {'Acceptance_Rate': 20, 'Overall_Utilization': 100, 'Task_Completion_Time': 24, 'No_of_Completed_Jobs': 1, 'No_of_Rejected_Jobs': 4, 'Node_Count': 1, 'Total_Num_Tasks': 74}
+2. with 9 node: {'Acceptance_Rate': 100, 'Overall_Utilization': 49, 'Task_Completion_Time': 28, 'No_of_Completed_Jobs': 5, 'No_of_Rejected_Jobs': 0, 'Node_Count': 9, 'Total_Num_Tasks': 74}
+3. with dynamic nodes: {'Acceptance_Rate': 80, 'Overall_Utilization': 58, 'Task_Completion_Time': 34, 'No_of_Completed_Jobs': 4, 'No_of_Rejected_Jobs': 1, 'Node_Count': [5, 3, 3, 5, 3], 'Total_Num_Tasks': 74}

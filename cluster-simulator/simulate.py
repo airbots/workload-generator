@@ -71,6 +71,70 @@ def scale_workload(data, config):
     return result
 
 
+# This function is a wrapper of the origimal scale_workload function with custom node count
+def scale_workload_dynamic(data, config, node_lst):
+    result = {}
+    data_copy = data.copy()
+
+    # get the maximum time needed to complete the entire workload
+    max_time = max([task.arrival_time + task.deadline for task in data])
+    logging.info(f'The maximum time needed to complete the entire workload is: {max_time}')
+    
+    processed_task = 0
+    rejected_task = 0
+
+    # Initialize the cluster, where each node is empty for every second of the timeline
+    default_cluster = [0] * max_time
+    cluster_state = [default_cluster for _ in range(node_lst[0])]
+    # load the constant time to complete a task
+    execution_time = config['Time_To_Complete_Task']
+
+    # Start the simulation, where each iteration represents one second
+    for i in range(max_time):
+        task_queue = []
+        node_queue = []
+        # check if it is time to bring in new task
+        if len(data) == 0:
+            break
+        if i == data[0].arrival_time:
+            logging.info(f'----- Processing task: {data[0]} at time {i} -----')
+            task_queue.append(data.pop(0))
+            node_queue.append(node_lst.pop(0))
+            parallization = get_num_task_per_node(task_queue[0], config)
+            cluster_state = scale_workload(cluster_state, node_queue[0], i)
+            if task_can_be_processed(task_queue[0], cluster_state, parallization, execution_time):
+                current_task = task_queue.pop(0)
+                temp_cluster_state = process_task(current_task, cluster_state, parallization, execution_time)
+                processed_task += 1
+                cluster_state = temp_cluster_state
+                logging.info(f'The task {current_task} is processed, the cluster state after processing the task is: {[node.count(1) for node in cluster_state]}')
+                logging.info(f'The cluster state after processing the task is: {[node.count(1) for node in cluster_state]}')
+            else:
+                logging.info(f'The task cannot be processed, rejecting the task')
+                rejected_task += 1
+        else:
+            logging.info(f'No task is coming in at time {i}')
+    
+    # Calculate the acceptance rate
+    if processed_task + rejected_task == 0:
+        acceptace_rate = 0
+    else:
+        acceptace_rate = int((processed_task / (processed_task + rejected_task)) * 100)
+
+    completion_time = max(i for sublist in cluster_state for i, x in enumerate(sublist) if x == 1)
+    utilization = int(sum([node.count(1) for node in cluster_state]) / (len(cluster_state) * completion_time)*100)
+
+    result['Acceptance_Rate'] = acceptace_rate
+    result['Overall_Utilization'] = utilization
+    result['Task_Completion_Time'] = completion_time
+    result['No_of_Completed_Jobs'] = processed_task
+    result['No_of_Rejected_Jobs'] = rejected_task
+    result['Node_Count'] = len(cluster_state)
+    result['Total_Num_Tasks'] = sum([task.num_tasks for task in data_copy])
+        
+    return result
+
+
 def task_can_be_processed(task, cluster_state, parallelization, execution_time):
     """
     Checks if a task can be processed by the current cluster state considering the available space, parallelization level, and execution time.
@@ -182,6 +246,28 @@ def scale_up(cluster_state, target_node_count, timestamp):
     return reassign_task(new_cluster, total_tasks_to_assign, timestamp)
 
 
+def scale_workload(cluster_state, target_node_count, timestamp):
+    """
+    This is a wrapper of Scales the cluster to process the workload.
+
+    Parameters:
+    - cluster_state: A list of lists representing the current state of the cluster.
+    - target_node_count: The target number of nodes in the cluster after scaling.
+    - timestamp: The current timestamp.
+
+    Returns:
+    - The updated state of the cluster after scaling.
+    """
+
+    if target_node_count > len(cluster_state):
+        return scale_up(cluster_state, target_node_count, timestamp)
+    elif target_node_count < len(cluster_state):
+        return scale_down(cluster_state, target_node_count, timestamp)
+    else:
+        logging.info(f'No scaling is needed')
+        return cluster_state
+
+
 def reassign_task(cluster_state, total_tasks_to_assign, timestamp):
     """
     Reassigns tasks to nodes in the cluster.
@@ -273,7 +359,11 @@ def calc_min_nodes(task, cluster_state, execution_time, parallelization):
 This section is for testing
 
 '''
+min_lst = [1, 1, 1, 1, 1]
+node_lst = [5, 3, 3, 5, 3]
+max_lst = [9, 9, 9, 9, 9]
+
 if __name__ == "__main__":
-    print(scale_workload(data, config))
+    print(scale_workload_dynamic(data, config, max_lst))
 
 # %%

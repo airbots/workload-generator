@@ -1,9 +1,9 @@
 from task import Task
 import json
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, log_loss
+from sklearn.linear_model import LogisticRegression
 import math
 import logging
 
@@ -108,6 +108,52 @@ def random_forest(X, Y):
     logging.info(f"Best parameters: {grid_search.best_params_}")
     logging.info(f"Mean Squared Error (MSE): {mse}")
     logging.info(f"R^2 Score: {r2}")
+
+    return best_model
+
+
+def logistic_regression(X, Y):
+    """
+    This function trains a LogisticRegression model using the given data and node list. 
+    It also performs grid search to find the best hyperparameters for the model.
+
+    Parameters:
+    - data: A list of Task objects. Each Task object represents a task with attributes like arrival_time, num_tasks, cpu, memory, network, and deadline.
+    - node_lst: A list of node counts associated with each task in the data.
+
+    Returns:
+    - The best LogisticRegression model trained with the optimal hyperparameters found during grid search.
+    """
+
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+    model = LogisticRegression(multi_class='multinomial', random_state=42)
+
+    # Train the model
+    model.fit(X_train, Y_train)
+
+    param_grid = {
+        'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000],
+        'penalty': ['l2'],
+        'solver': ['newton-cg', 'lbfgs', 'sag', 'saga']
+    }
+
+    grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5)
+    grid_search.fit(X_train, Y_train)
+
+    best_model = grid_search.best_estimator_
+
+    # Make predictions
+    Y_pred = best_model.predict(X_test)
+    Y_pred_proba = best_model.predict_proba(X_test)
+
+    # Evaluate the best model
+    acc = accuracy_score(Y_test, Y_pred)
+    # logloss = log_loss(Y_test, Y_pred_proba)
+
+    logging.info(f"Best parameters: {grid_search.best_params_}")
+    logging.info(f"Accuracy: {acc}")
+    # logging.info(f"Log Loss: {logloss}")
 
     return best_model
 

@@ -47,11 +47,11 @@ df.to_csv('ml_model/model_output.csv', index=False)
 # %%
 # Model Training
 import pandas as pd
-from utils import random_forest
+from utils import random_forest, logistic_regression
 import logging
 import joblib
 
-df = pd.read_csv('data/model_output.csv')
+df = pd.read_csv('ml_model/model_output.csv')
 # %%
 Y = df['Node_Count']
 X = df.drop(['Node_Count', 'No_of_Completed_Tasks', 'No_of_Rejected_Tasks'], axis=1)
@@ -62,11 +62,34 @@ Y_lst = Y.values.tolist()
 logging.info(f"Lenght of X: {len(X_lst)}")
 logging.info(f"Lenght of Y: {len(Y_lst)}")
 
-model = random_forest(X_lst, Y_lst)
+model_lr = logistic_regression(X_lst, Y_lst)
+model_rf = random_forest(X_lst, Y_lst)
 # %%
 # Save Model
-joblib.dump(model, 'random_forest_model.joblib')
+joblib.dump(model_lr, 'ml_model/logistic_regression_model.joblib')
+joblib.dump(model_rf, 'ml_model/random_forest_model.joblib')
 
+# %%
 # Load
-# loaded_model = joblib.load('random_forest_model.joblib')
+from utils import load_workload, load_config, get_num_task_per_node
+import joblib
 
+config = load_config()
+
+
+def calc_completion_time(task):
+    return task.num_tasks * config['Time_To_Complete_Task'] / get_num_task_per_node(task, config)
+
+def calc_overall_utilization(task):
+    return max(task.cpu, task.memory, task.network) * get_num_task_per_node(task, config)
+
+X_data = load_workload('workload1')
+
+input_lst = [[80, 80, calc_completion_time(data), data.num_tasks] for data in X_data]
+
+loaded_model = joblib.load('ml_model/random_forest_model.joblib')
+prd_node_lst = loaded_model.predict(input_lst)
+prd_node_lst = [int(i) for i in prd_node_lst]
+
+print(prd_node_lst)
+# %%

@@ -1,58 +1,6 @@
-ArrivalTime, No. of Tasks in job, CPU utilization for each task, Memory Utilization for each task, Network Utilization for each task, Deadline for the job
-0,1,20,40,30,2      1
-1,14,20,40,30,28    1
-11,30,20,40,30,6    9
-13,2,20,40,30,4     1
-14,27,20,40,30,54   1
-
-slots = 2
-task_execution_time = 4
-hearbeat = 2
-
-1 node:
-num job, utilization, acceptace_rate, total_tasks, num of node, execution_time
-5, 8.8, 40, 74, 1, 17
-
-
-0, 0, 0,
-1, 40, 50
-2, 40, 50
-4, 0, 50
-6, 0, 50
-8, 0, 50
-10, 0, 50
-11, 0, 33.3
-12, 0, 33.3
-13, 80, 50
-14, 80, 40
-16, 80, 40
-17, 0, 40
-
-34 slots, 3 tasks
-
-utilization_weighted_avg: 3/34
-
----------------------
-ArrivalTime, No. of Tasks in job, CPU utilization for each task, Memory Utilization for each task, Network Utilization for each task, Deadline for the job
-0,1,20,40,30,2      1
-1,14,20,40,30,28    1
-11,30,20,40,30,6    9
-13,2,20,40,30,4     1
-14,27,20,40,30,54   1
-
-2 nodes:
-num job, utilization, acceptace_rate, total_tasks, num of node, execution_time
-5, 26, 60, 74, 2, 42
-
-0, 0, 0
-1, 80, 100
-2, 80, 100
-4, 80, 100
-6, 80, 100
-8, 80, 100
-10, 80, 100
-11, 80, 66.67
-12, 80, 66.67
-13, 80, 50
-14, 80, 60
-42, 0, 60
+ArrivalTime,Num_Task,Max_CPU_Utilization,Memory_Utilization,Network_Utilization,job_deadline
+0,1,20,40,30,2
+1,14,20,40,30,28
+11,30,20,40,30,6
+13,2,20,40,30,4
+14,27,20,40,30,54

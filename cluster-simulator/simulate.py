@@ -3,7 +3,7 @@ from utils import load_workload, load_config, get_num_task_per_node
 import math
 import logging
 
-data = load_workload('workload3')
+data = load_workload('workload')
 config = load_config()
 
 logging.getLogger().setLevel(logging.INFO)
@@ -12,6 +12,7 @@ logging.getLogger().setLevel(logging.INFO)
 # This function is used to simulate the cluster scaling process
 def scale_workload(data, config):
     result = {}
+    data_copy = data.copy()
 
     # get the maximum time needed to complete the entire workload
     max_time = max([task.arrival_time + task.deadline for task in data])
@@ -65,6 +66,7 @@ def scale_workload(data, config):
     result['No_of_Completed Tasks'] = processed_task
     result['No_of_Rejected_Tasks'] = rejected_task
     result['Node_Count'] = len(cluster_state)
+    result['Total_Num_Tasks'] = sum([task.num_tasks for task in data_copy])
         
     return result
 

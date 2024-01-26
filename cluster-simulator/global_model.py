@@ -1,11 +1,12 @@
 # %%
 from utils import load_workload, load_config, get_min_nodes_lst, get_num_task_per_node
 import matplotlib.pyplot as plt
+from simulate import scale_workload
 data = load_workload('workload')
 config = load_config()
 # %%
 
-# Data
+# Exploratory Data Analysis
 arrival_time = [task.arrival_time for task in data]
 no_of_tasks = [task.num_tasks for task in data]
 
@@ -23,3 +24,4 @@ ax.set_ylabel('No. of Tasks in job')
 plt.show()
 
 # %%
+# Model Controller

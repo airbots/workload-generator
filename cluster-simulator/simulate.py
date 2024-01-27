@@ -3,7 +3,7 @@ from utils import load_workload, load_config, get_num_task_per_node
 import math
 import logging
 
-data = load_workload('workload1')
+data = load_workload('workload7')
 config = load_config()
 
 logging.getLogger().setLevel(logging.INFO)
@@ -359,13 +359,17 @@ def calc_min_nodes(task, cluster_state, execution_time, parallelization):
 This section is for testing
 
 '''
-min_lst = [1, 1, 1, 1, 1]
-node_lst = [5, 3, 3, 5, 3]
-max_lst = [9, 9, 9, 9, 9]
+node_lst = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 3, 5, 5, 3, 3, 5, 5, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5]
+lenth = len(node_lst)
+lst = [5] * lenth
+min_lst = [1] * lenth
+max_lst = [10] * lenth
 second_algo_lst = [1, 1, 9, 1, 1]
 
 if __name__ == "__main__":
-    print(scale_workload_dynamic(data, config, second_algo_lst))
+    print(f'dynamic: {scale_workload_dynamic(data, config, lst)}')
+    #print(f'min: {scale_workload_dynamic(data, config, min_lst)}')
+    #print(f'max: {scale_workload_dynamic(data, config, max_lst)}')
 
 
 # %%

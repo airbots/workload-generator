@@ -7,6 +7,16 @@ data = load_workload('workload')
 config = load_config()
 
 def profile():
+    """
+    A function to profile the scale_workload function.
+
+    Args:
+    None.
+
+    Returns:
+    None.
+    """
     scale_workload(data, config)
 
-cProfile.run('profile()')
+if __name__ == '__main__':
+    cProfile.run('profile()')

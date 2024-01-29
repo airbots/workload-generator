@@ -23,11 +23,19 @@ node_count_avg = [1, 10, 5]
 
 
 def bar_plot():
+    """
+    A function to plot the results of the simulation.
+
+    Args:
+    None.
+
+    Returns:
+    None. Saves the visualization to a .png file.
+    """
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c']
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 10))
 
-    # Function to add labels
     def add_labels(ax, data):
         for i, v in enumerate(data):
             ax.text(i, v + 0.5, str(v), ha='center', va='bottom')
@@ -63,6 +71,15 @@ def bar_plot():
 
 
 def radar_plot():
+    """
+    A function to plot the results of the simulation.
+
+    Args:
+    None.
+
+    Returns:
+    None. Saves the visualization to a .png file.
+    """
 
     categories = list(data.keys())
     N = len(categories)
